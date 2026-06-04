@@ -32,6 +32,7 @@
             <div class="ns-chips">
                 <span class="ns-chip"><i class="bi bi-person-badge me-1"></i>NIS: {{ $siswa->nis }}</span>
                 <span class="ns-chip"><i class="bi bi-building me-1"></i>Kelas: {{ $siswa->kelas }}</span>
+                <span class="ns-chip"><i class="bi bi-calendar3 me-1"></i>Angkatan: {{ $siswa->angkatan ?? '-' }}</span>
             </div>
         </div>
 

@@ -105,8 +105,8 @@ class GuruController extends Controller
         // Ambil profil guru dari user yang login
         $guru = Auth::user()->guru()->with('mataPelajaran')->first();
 
-        // Ambil semua kelas unik dari tabel siswa
-        $kelasList = Siswa::distinct()->orderBy('kelas')->pluck('kelas');
+        // Ambil semua kelas yang diampu oleh guru ini
+        $kelasList = $guru->kelasMengajar()->pluck('kelas');
 
         $siswas    = collect(); // Default: kosong
         $kelasDipilih = $request->kelas;
@@ -227,8 +227,8 @@ class GuruController extends Controller
         // Ambil profil guru
         $guru = Auth::user()->guru()->with('mataPelajaran')->first();
 
-        // Ambil kelas yang tersedia
-        $kelasList = Siswa::distinct()->orderBy('kelas')->pluck('kelas');
+        // Ambil kelas yang diampu oleh guru ini
+        $kelasList = $guru->kelasMengajar()->pluck('kelas');
 
         // Query nilai yang diinput oleh guru ini
         $query = $guru->nilais()->with('siswa');

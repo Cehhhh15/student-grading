@@ -44,6 +44,10 @@
                     <i class="bi bi-building me-1"></i>
                     Kelas: <strong>{{ $siswa->kelas }}</strong>
                 </span>
+                <span class="hero-meta-item">
+                    <i class="bi bi-calendar3 me-1"></i>
+                    Angkatan: <strong>{{ $siswa->angkatan ?? '-' }}</strong>
+                </span>
             </div>
         </div>
 

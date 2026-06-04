@@ -62,6 +62,7 @@ class Siswa extends Model
         'nis',     // Nomor Induk Siswa (unik)
         'nama',    // Nama lengkap siswa
         'kelas',   // Kelas siswa (contoh: X-A, XI-B, XII-C)
+        'angkatan',// Angkatan masuk (contoh: 2024)
     ];
 
     // ============================================================

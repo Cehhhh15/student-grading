@@ -113,6 +113,16 @@ class Guru extends Model
         return $this->hasMany(Nilai::class);
     }
 
+    /**
+     * Relasi One-to-Many: Guru ke GuruKelas.
+     *
+     * @return HasMany<GuruKelas, $this>
+     */
+    public function kelasMengajar(): HasMany
+    {
+        return $this->hasMany(GuruKelas::class);
+    }
+
     // ============================================================
     // METHOD - Logika Bisnis
     // ============================================================

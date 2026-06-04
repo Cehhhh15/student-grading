@@ -124,9 +124,10 @@
                 <thead>
                     <tr>
                         <th class="ps-4">#</th>
-                        <th>Siswa</th>
-                        <th>Kelas</th>
-                        <th>Mata Pelajaran</th>
+                        <th class="ps-4 py-3 fw-semibold text-muted border-0">Siswa</th>
+                        <th class="py-3 fw-semibold text-muted border-0">Kelas</th>
+                        <th class="py-3 fw-semibold text-muted border-0">Angkatan</th>
+                        <th class="py-3 fw-semibold text-muted border-0">Mata Pelajaran</th>
                         <th class="text-center">Tugas</th>
                         <th class="text-center">UTS</th>
                         <th class="text-center">UAS</th>
@@ -153,6 +154,11 @@
                             <td>
                                 <span class="badge rounded-pill" style="background:#f3f4f6;color:#374151;font-size:0.72rem;font-weight:600;">
                                     {{ $nilai->siswa->kelas ?? '-' }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="text-muted small fw-semibold">
+                                    {{ $nilai->siswa->angkatan ?? '-' }}
                                 </span>
                             </td>
                             <td style="font-size:0.84rem;">{{ $nilai->mataPelajaran->nama ?? '-' }}</td>

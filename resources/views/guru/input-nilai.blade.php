@@ -271,6 +271,7 @@
                                     <th class="ps-4 py-3 fw-semibold text-muted border-0" style="width:3%;">#</th>
                                     <th class="py-3 fw-semibold text-muted border-0" style="min-width:180px;">Nama Siswa</th>
                                     <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:60px;">NIS</th>
+                                    <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:80px;">Angkatan</th>
                                     <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:120px;">
                                         Nilai Tugas <span class="badge ms-1" style="background:rgba(245,158,11,.15);color:var(--clr-warning);font-size:.7rem;">30%</span>
                                     </th>
@@ -330,6 +331,11 @@
                                                   style="background:rgba(99,102,241,.08);color:var(--clr-primary);font-size:.75rem;">
                                                 {{ $siswa->nis ?? '-' }}
                                             </span>
+                                        </td>
+
+                                        {{-- Angkatan --}}
+                                        <td class="py-3 border-0 text-center text-muted small fw-semibold">
+                                            {{ $siswa->angkatan ?? '-' }}
                                         </td>
 
                                         {{-- Nilai Tugas --}}
