@@ -433,28 +433,28 @@
             <div class="demo-box">
                 <div class="demo-box-title">✦ Akun Demo — klik untuk isi otomatis</div>
 
-                <div class="demo-row" onclick="fillDemo('admin@simpel.com')">
+                <div class="demo-row" onclick="fillDemo('admin@SIMPEL.com')">
                     <span class="demo-role">
                         <span class="demo-badge" style="background:rgba(99,102,241,0.1);color:#4338ca;">Admin</span>
                         Administrator
                     </span>
-                    <span class="demo-email">admin@simpel.com</span>
+                    <span class="demo-email">admin@SIMPEL.com</span>
                 </div>
 
-                <div class="demo-row" onclick="fillDemo('ahmad@simpel.com')">
+                <div class="demo-row" onclick="fillDemo('guru1@SIMPEL.com')">
                     <span class="demo-role">
                         <span class="demo-badge" style="background:rgba(6,182,212,0.1);color:#0e7490;">Guru</span>
-                        Ahmad Guru
+                        Data Guru 1
                     </span>
-                    <span class="demo-email">ahmad@simpel.com</span>
+                    <span class="demo-email">guru1@SIMPEL.com</span>
                 </div>
 
-                <div class="demo-row" onclick="fillDemo('budi@simpel.com')">
+                <div class="demo-row" onclick="fillDemo('siswa2024001@SIMPEL.com')">
                     <span class="demo-role">
-                        <span class="demo-badge" style="background:rgba(16,185,129,0.1);color:#065f46;">Siswa</span>
-                        Budi Siswa
+                        <span class="demo-badge" style="background:rgba(16,185,129,0.1);color:#047857;">Siswa</span>
+                        Siswa (Angkatan 2024)
                     </span>
-                    <span class="demo-email">budi@simpel.com</span>
+                    <span class="demo-email">siswa2024001@SIMPEL.com</span>
                 </div>
 
                 <div style="text-align:center;margin-top:0.5rem;font-size:0.69rem;color:#cbd5e1;">

@@ -67,9 +67,10 @@
                 <thead>
                     <tr>
                         <th class="ps-4" style="width:50px">#</th>
-                        <th>Siswa</th>
+                        <th class="ps-3">Siswa</th>
+                        <th>NIS</th>
                         <th>Kelas</th>
-                        <th>Email</th>
+                        <th>Angkatan</th>
                         <th class="text-center" style="width:120px">Aksi</th>
                     </tr>
                 </thead>
@@ -79,24 +80,26 @@
                             <td class="ps-4 text-muted">
                                 {{ ($siswas->currentPage() - 1) * $siswas->perPage() + $loop->iteration }}
                             </td>
-                            <td>
+                            <td class="ps-3">
                                 <div class="d-flex align-items-center gap-2">
-                                    <div class="avatar-initials"
-                                         style="background:linear-gradient(135deg,hsl({{ (crc32($siswa->nama) % 60 + 200) }},60%,55%),hsl({{ (crc32($siswa->nama) % 60 + 240) }},70%,65%));color:#fff;">
-                                        {{ strtoupper(substr($siswa->nama, 0, 2)) }}
+                                    @php
+                                        $initials = strtoupper(substr($siswa->nama, 0, 2));
+                                        $colors = ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899'];
+                                        $color = $colors[crc32($siswa->nama) % count($colors)];
+                                    @endphp
+                                    <div class="avatar-initials" style="background:{{ $color }};color:#fff;">
+                                        {{ $initials }}
                                     </div>
-                                    <div>
-                                        <div class="fw-600" style="font-size:0.85rem;">{{ $siswa->nama }}</div>
-                                        <code style="font-size:0.7rem;color:#6366f1;">{{ $siswa->nis }}</code>
-                                    </div>
+                                    <div class="fw-medium text-dark">{{ $siswa->nama }}</div>
                                 </div>
                             </td>
+                            <td><code>{{ $siswa->nis }}</code></td>
                             <td>
-                                <span class="badge rounded-pill" style="background:rgba(99,102,241,0.1);color:#4338ca;font-size:0.72rem;font-weight:700;">
+                                <span class="badge rounded-pill" style="background:rgba(99,102,241,0.1);color:#4338ca;font-size:0.75rem;">
                                     {{ $siswa->kelas }}
                                 </span>
                             </td>
-                            <td style="color:#6b7280;font-size:0.83rem;">{{ $siswa->user->email ?? '-' }}</td>
+                            <td>{{ $siswa->angkatan ?? '-' }}</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-1">
                                     <a href="{{ route('admin.siswas.edit', $siswa) }}"

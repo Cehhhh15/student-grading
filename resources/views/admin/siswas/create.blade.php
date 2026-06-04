@@ -148,6 +148,27 @@
                                 </div>
                             @enderror
                         </div>
+
+                        {{-- ---- Field Angkatan ---- --}}
+                        <div class="mt-4">
+                            <label for="angkatan" class="form-label fw-medium">
+                                Angkatan <span class="text-danger">*</span>
+                            </label>
+                            <input type="number"
+                                   id="angkatan"
+                                   name="angkatan"
+                                   class="form-control @error('angkatan') is-invalid @enderror"
+                                   placeholder="Contoh: 2024"
+                                   value="{{ old('angkatan') }}"
+                                   min="2000"
+                                   max="2100"
+                                   required>
+                            @error('angkatan')
+                                <div class="invalid-feedback">
+                                    <i class="bi bi-exclamation-circle-fill me-1"></i> {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                     </div>
 
                 </div>{{-- /card-body --}}

@@ -225,6 +225,7 @@
                             <th class="ps-4 py-3 fw-semibold text-muted border-0" style="width:3%;">#</th>
                             <th class="py-3 fw-semibold text-muted border-0" style="min-width:180px;">Nama Siswa</th>
                             <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:100px;">Kelas</th>
+                            <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:80px;">Angkatan</th>
                             <th class="py-3 fw-semibold text-muted border-0 text-center" style="width:90px;">
                                 Tugas <span class="d-block" style="font-size:.68rem;color:var(--clr-warning);">30%</span>
                             </th>
@@ -292,6 +293,11 @@
                                     </span>
                                 </td>
 
+                                {{-- Angkatan --}}
+                                <td class="py-3 border-0 text-center text-muted small fw-semibold">
+                                    {{ $nilai->siswa->angkatan ?? '-' }}
+                                </td>
+
                                 {{-- Tugas --}}
                                 <td class="py-3 border-0 text-center fw-semibold">
                                     <span style="color:var(--clr-warning);">{{ $nilai->nilai_tugas }}</span>
@@ -337,7 +343,7 @@
                     {{-- Table footer summary --}}
                     <tfoot>
                         <tr style="background:rgba(99,102,241,.04);border-top:2px solid rgba(99,102,241,.12);">
-                            <td colspan="6" class="ps-4 py-3 fw-bold text-muted border-0">
+                            <td colspan="7" class="ps-4 py-3 fw-bold text-muted border-0">
                                 Rata-rata (halaman ini)
                             </td>
                             <td class="py-3 border-0 text-center fw-bold" style="color:{{ $rataRata >= 70 ? 'var(--clr-success)' : 'var(--clr-danger)' }};">

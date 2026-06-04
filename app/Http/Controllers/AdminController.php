@@ -141,6 +141,7 @@ class AdminController extends Controller
             'nis'      => 'required|string|max:20|unique:siswas,nis',
             'nama'     => 'required|string|max:255',
             'kelas'    => 'required|string|max:20',
+            'angkatan' => 'required|integer|min:2000|max:2100',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ], [
@@ -164,6 +165,7 @@ class AdminController extends Controller
             'nis'     => $validated['nis'],
             'nama'    => $validated['nama'],
             'kelas'   => $validated['kelas'],
+            'angkatan'=> $validated['angkatan'],
         ]);
 
         return redirect()->route('admin.siswas')
@@ -195,6 +197,7 @@ class AdminController extends Controller
             'nis'   => "required|string|max:20|unique:siswas,nis,{$siswa->id}",
             'nama'  => 'required|string|max:255',
             'kelas' => 'required|string|max:20',
+            'angkatan' => 'required|integer|min:2000|max:2100',
             'email' => "required|email|unique:users,email,{$siswa->user_id}",
         ]);
 
@@ -203,6 +206,7 @@ class AdminController extends Controller
             'nis'   => $validated['nis'],
             'nama'  => $validated['nama'],
             'kelas' => $validated['kelas'],
+            'angkatan' => $validated['angkatan'],
         ]);
 
         // Update nama dan email di tabel users
@@ -277,7 +281,20 @@ class AdminController extends Controller
     public function gurusCreate(): View
     {
         $mapels = MataPelajaran::orderBy('nama')->get();
-        return view('admin.guru.create', compact('mapels'));
+        $kelasList = ['X-A', 'X-B', 'X-C', 'XI-A', 'XI-B', 'XI-C', 'XII-A', 'XII-B', 'XII-C'];
+        
+        $takenClassesList = \Illuminate\Support\Facades\DB::table('guru_kelas')
+            ->join('gurus', 'guru_kelas.guru_id', '=', 'gurus.id')
+            ->select('gurus.mata_pelajaran_id as mapel_id', 'guru_kelas.kelas')
+            ->get();
+            
+        // Get dynamic angkatan mapping based on actual student data
+        $angkatanPerKelas = \App\Models\Siswa::select('kelas', 'angkatan')
+            ->groupBy('kelas', 'angkatan')
+            ->pluck('angkatan', 'kelas')
+            ->toArray();
+            
+        return view('admin.guru.create', compact('mapels', 'kelasList', 'takenClassesList', 'angkatanPerKelas'));
     }
 
     /**
@@ -292,9 +309,20 @@ class AdminController extends Controller
             'nip'               => 'required|string|max:30|unique:gurus,nip',
             'nama'              => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
+            'kelas_mengajar'    => 'required|array|min:1',
+            'kelas_mengajar.*'  => 'string',
             'email'             => 'required|email|unique:users,email',
             'password'          => 'required|string|min:6|confirmed',
         ]);
+
+        $takenClasses = \App\Models\GuruKelas::whereHas('guru', function($q) use ($validated) {
+            $q->where('mata_pelajaran_id', $validated['mata_pelajaran_id']);
+        })->pluck('kelas')->toArray();
+
+        $intersect = array_intersect($validated['kelas_mengajar'], $takenClasses);
+        if (!empty($intersect)) {
+            return back()->withInput()->withErrors(['kelas_mengajar' => 'Kelas ' . implode(', ', $intersect) . ' sudah diajar oleh guru lain untuk mata pelajaran ini.']);
+        }
 
         $user = User::create([
             'name'     => $validated['nama'],
@@ -303,12 +331,16 @@ class AdminController extends Controller
             'role'     => 'guru',
         ]);
 
-        Guru::create([
+        $guru = Guru::create([
             'user_id'           => $user->id,
             'nip'               => $validated['nip'],
             'nama'              => $validated['nama'],
             'mata_pelajaran_id' => $validated['mata_pelajaran_id'],
         ]);
+
+        foreach ($validated['kelas_mengajar'] as $kelas) {
+            $guru->kelasMengajar()->create(['kelas' => $kelas]);
+        }
 
         return redirect()->route('admin.guru')
             ->with('success', "Guru {$validated['nama']} berhasil ditambahkan.");
@@ -323,7 +355,22 @@ class AdminController extends Controller
     public function gurusEdit(Guru $guru): View
     {
         $mapels = MataPelajaran::orderBy('nama')->get();
-        return view('admin.guru.edit', compact('guru', 'mapels'));
+        $kelasList = ['X-A', 'X-B', 'X-C', 'XI-A', 'XI-B', 'XI-C', 'XII-A', 'XII-B', 'XII-C'];
+        $guruKelas = $guru->kelasMengajar->pluck('kelas')->toArray();
+
+        $takenClassesList = \Illuminate\Support\Facades\DB::table('guru_kelas')
+            ->join('gurus', 'guru_kelas.guru_id', '=', 'gurus.id')
+            ->where('gurus.id', '!=', $guru->id)
+            ->select('gurus.mata_pelajaran_id as mapel_id', 'guru_kelas.kelas')
+            ->get();
+
+        // Get dynamic angkatan mapping based on actual student data
+        $angkatanPerKelas = \App\Models\Siswa::select('kelas', 'angkatan')
+            ->groupBy('kelas', 'angkatan')
+            ->pluck('angkatan', 'kelas')
+            ->toArray();
+
+        return view('admin.guru.edit', compact('guru', 'mapels', 'kelasList', 'guruKelas', 'takenClassesList', 'angkatanPerKelas'));
     }
 
     /**
@@ -339,14 +386,31 @@ class AdminController extends Controller
             'nip'               => "required|string|max:30|unique:gurus,nip,{$guru->id}",
             'nama'              => 'required|string|max:255',
             'mata_pelajaran_id' => 'required|exists:mata_pelajarans,id',
+            'kelas_mengajar'    => 'required|array|min:1',
+            'kelas_mengajar.*'  => 'string',
             'email'             => "required|email|unique:users,email,{$guru->user_id}",
         ]);
+
+        $takenClasses = \App\Models\GuruKelas::whereHas('guru', function($q) use ($validated, $guru) {
+            $q->where('mata_pelajaran_id', $validated['mata_pelajaran_id'])
+              ->where('id', '!=', $guru->id);
+        })->pluck('kelas')->toArray();
+
+        $intersect = array_intersect($validated['kelas_mengajar'], $takenClasses);
+        if (!empty($intersect)) {
+            return back()->withInput()->withErrors(['kelas_mengajar' => 'Kelas ' . implode(', ', $intersect) . ' sudah diajar oleh guru lain untuk mata pelajaran ini.']);
+        }
 
         $guru->update([
             'nip'               => $validated['nip'],
             'nama'              => $validated['nama'],
             'mata_pelajaran_id' => $validated['mata_pelajaran_id'],
         ]);
+
+        $guru->kelasMengajar()->delete();
+        foreach ($validated['kelas_mengajar'] as $kelas) {
+            $guru->kelasMengajar()->create(['kelas' => $kelas]);
+        }
 
         $guru->user->update([
             'name'  => $validated['nama'],

@@ -165,6 +165,32 @@
                         @endif
                     </div>
 
+                    {{-- Kelas Mengajar --}}
+                    <div class="mt-4">
+                        <label class="form-label fw-600">
+                            Kelas Mengajar <span class="text-danger">*</span>
+                        </label>
+                        <div class="card card-body p-3 @error('kelas_mengajar') border-danger @enderror" style="background:rgba(99,102,241,.03);border-color:rgba(99,102,241,.2);">
+                            <div class="row g-2">
+                                @foreach($kelasList as $kelas)
+                                <div class="col-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="kelas_mengajar[]" value="{{ $kelas }}" id="kelas_{{ $kelas }}" {{ in_array($kelas, old('kelas_mengajar', $guruKelas)) ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="kelas_{{ $kelas }}">
+                                            {{ $kelas }} <small class="text-muted" style="font-size:0.75em;">(Angkatan {{ $angkatanPerKelas[$kelas] ?? 'Kosong' }})</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @error('kelas_mengajar')
+                            <div class="text-danger mt-1" style="font-size:.875em;">
+                                <i class="bi bi-exclamation-circle-fill"></i> {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                 </div>{{-- /card-body --}}
             </div>{{-- /card --}}
         </div>{{-- /col --}}
@@ -311,5 +337,47 @@
             eyeIcon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
         }
     });
+
+    // Check taken classes logic
+    const takenClassesList = @json($takenClassesList);
+    const angkatanMapping = @json($angkatanPerKelas);
+    const mapelSelect = document.getElementById('mata_pelajaran_id');
+    const checkboxes = document.querySelectorAll('input[name="kelas_mengajar[]"]');
+
+    function updateCheckboxes() {
+        const selectedMapel = mapelSelect.value;
+        if (!selectedMapel) return;
+
+        // Get classes already taken for the selected mapel
+        const takenClasses = takenClassesList
+            .filter(item => item.mapel_id == selectedMapel)
+            .map(item => item.kelas);
+
+        checkboxes.forEach(cb => {
+            const isTaken = takenClasses.includes(cb.value);
+            cb.disabled = isTaken;
+            const label = document.querySelector(`label[for="${cb.id}"]`);
+            let angkatan = angkatanMapping[cb.value] || 'Kosong';
+            let angkatanHtml = `<small class="text-muted" style="font-size:0.75em;">(Angkatan ${angkatan})</small>`;
+            
+            if (isTaken) {
+                // If it is taken, we shouldn't uncheck it ONLY IF it was somehow checked initially for editing, 
+                // but since takenClassesList excludes the current guru's classes in gurusEdit, it won't mark the current guru's classes as disabled.
+                cb.checked = false;
+                label.innerHTML = `${cb.value} ${angkatanHtml} <span class="badge bg-danger ms-1" style="font-size:0.6rem">Penuh</span>`;
+                label.style.opacity = '0.5';
+            } else {
+                label.innerHTML = `${cb.value} ${angkatanHtml}`;
+                label.style.opacity = '1';
+            }
+        });
+    }
+
+    mapelSelect.addEventListener('change', updateCheckboxes);
+    
+    // Run on initial load
+    if (mapelSelect.value) {
+        updateCheckboxes();
+    }
 </script>
 @endpush
