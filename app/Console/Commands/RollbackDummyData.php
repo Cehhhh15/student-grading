@@ -5,10 +5,12 @@
  * FILE  : RollbackDummyData.php
  * LOKASI: app/Console/Commands/RollbackDummyData.php
  * ============================================================
- * Artisan Command untuk menghapus data dummy siswa.
+ * Artisan Command untuk menghapus semua data dummy (guru + siswa + nilai).
+ * Admin dan Mata Pelajaran TIDAK akan terpengaruh.
  *
  * CARA PAKAI:
  *   php artisan dummy:rollback
+ *   php artisan dummy:rollback --force   (tanpa konfirmasi)
  *
  * ============================================================
  */
@@ -34,7 +36,7 @@ class RollbackDummyData extends Command
      *
      * @var string
      */
-    protected $description = 'Hapus semua data dummy siswa yang dibuat oleh DummyMahasiswaSeeder';
+    protected $description = 'Hapus semua data dummy (guru + siswa + nilai) yang dibuat oleh DummySeeder';
 
     /**
      * Tag penanda email dummy — harus sama dengan yang ada di DummyMahasiswaSeeder.
@@ -59,7 +61,7 @@ class RollbackDummyData extends Command
 
         if ($dummyUsers->isEmpty()) {
             $this->warn('  ⚠  Tidak ada data dummy yang ditemukan di database.');
-            $this->line('  Pastikan DummyMahasiswaSeeder pernah dijalankan terlebih dahulu.');
+            $this->line('  Pastikan DummySeeder pernah dijalankan terlebih dahulu.');
             $this->newLine();
             return 0;
         }
@@ -78,7 +80,7 @@ class RollbackDummyData extends Command
         $this->newLine();
         $this->warn("  ⚠  Tindakan ini akan menghapus {$jumlah} akun siswa dummy beserta");
         $this->warn("     semua nilai yang terkait secara permanen!");
-        $this->line('  Data asli (admin, guru, dan siswa dari DatabaseSeeder) TIDAK akan terpengaruh.');
+        $this->line('  Data asli (admin & mata pelajaran dari DatabaseSeeder) TIDAK akan terpengaruh.');
         $this->newLine();
 
         // Konfirmasi (kecuali --force)

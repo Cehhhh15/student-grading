@@ -319,7 +319,7 @@
 
 {{-- Hero --}}
 <section class="hero">
-    <div class="hero-eyebrow">Sistem Informasi Manajemen Pelajar</div>
+    <div class="hero-eyebrow">Sistem Informasi Manajemen Pelajar SMA Grogu</div>
 
     <h1 class="hero-title">
         Manajemen Nilai Siswa<br>

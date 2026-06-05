@@ -340,7 +340,7 @@
             </div>
             <p class="brand-desc">
                 SIMPEL menghadirkan platform manajemen penilaian akademik yang
-                terintegrasi untuk Admin, Guru, dan Siswa — dalam satu sistem yang
+                terintegrasi untuk Admin, Guru, dan Siswa dalam satu sistem yang
                 mudah digunakan.
             </p>
 
@@ -375,7 +375,7 @@
                 <div class="login-logo-sm">
                     <i class="bi bi-mortarboard-fill"></i>
                 </div>
-                <div class="login-title">Masuk ke SIMPEL</div>
+                <div class="login-title">Masuk ke SIMPEL SMA Grogu</div>
                 <div class="login-subtitle">Sistem Informasi Manajemen Pelajar</div>
             </div>
 
@@ -443,18 +443,18 @@
 
                 <div class="demo-row" onclick="fillDemo('guru1@SIMPEL.com')">
                     <span class="demo-role">
-                        <span class="demo-badge" style="background:rgba(6,182,212,0.1);color:#0e7490;">Guru</span>
-                        Data Guru 1
+                        <span class="demo-badge" style="background:rgba(6,182,212,0.1);color:#0e7490;"> Gantar Guru</span>
+                        Guru
                     </span>
-                    <span class="demo-email">guru1@SIMPEL.com</span>
+                    <span class="demo-email">guru11@SIMPEL.com</span>
                 </div>
 
-                <div class="demo-row" onclick="fillDemo('siswa2024001@SIMPEL.com')">
+                <div class="demo-row" onclick="fillDemo('siswa1@SIMPEL.com')">
                     <span class="demo-role">
-                        <span class="demo-badge" style="background:rgba(16,185,129,0.1);color:#047857;">Siswa</span>
-                        Siswa (Angkatan 2024)
+                        <span class="demo-badge" style="background:rgba(16,185,129,0.1);color:#047857;">Andi Siswa</span>
+                        Siswa
                     </span>
-                    <span class="demo-email">siswa2024001@SIMPEL.com</span>
+                    <span class="demo-email">siswa1@SIMPEL.com</span>
                 </div>
 
                 <div style="text-align:center;margin-top:0.5rem;font-size:0.69rem;color:#cbd5e1;">
