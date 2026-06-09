@@ -226,7 +226,8 @@
                         <th class="py-3 text-center" style="width:75px;">UAS</th>
                         <th class="py-3 text-center" style="width:100px;">Nilai Akhir</th>
                         <th class="py-3 text-center" style="width:80px;">Grade</th>
-                        <th class="py-3 text-center pe-4" style="width:120px;">Status</th>
+                        <th class="py-3 text-center" style="width:120px;">Status</th>
+                        <th class="py-3 text-center pe-4" style="width:80px;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -285,7 +286,7 @@
                             </td>
 
                             {{-- Status Badge --}}
-                            <td class="text-center pe-4">
+                            <td class="text-center">
                                 @if (strtoupper($nilai->status) === 'LULUS')
                                     <span class="badge-lulus">
                                         <i class="bi bi-check-circle-fill me-1"></i> Lulus
@@ -295,6 +296,50 @@
                                         <i class="bi bi-x-circle-fill me-1"></i> Tidak Lulus
                                     </span>
                                 @endif
+                            </td>
+
+                            {{-- Aksi Edit --}}
+                            <td class="text-center pe-4">
+                                <button type="button" class="btn btn-sm btn-warning rounded-3 shadow-sm" style="color: #fff;" data-bs-toggle="modal" data-bs-target="#editNilaiModal{{ $nilai->id }}" title="Edit Nilai">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                
+                                {{-- Modal Edit Nilai --}}
+                                <div class="modal fade" id="editNilaiModal{{ $nilai->id }}" tabindex="-1" aria-labelledby="editNilaiModalLabel{{ $nilai->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow-lg rounded-4 text-start">
+                                            <div class="modal-header border-0 pb-0">
+                                                <h5 class="modal-title fw-bold" id="editNilaiModalLabel{{ $nilai->id }}">Edit Nilai Siswa</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('admin.nilai.update', $nilai->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-body py-4">
+                                                    <p class="text-muted small mb-3">Ubah nilai <strong>{{ $nilai->siswa->nama }}</strong> untuk mata pelajaran <strong>{{ $nilai->mataPelajaran->nama }}</strong>.</p>
+                                                    <div class="row g-3">
+                                                        <div class="col-4">
+                                                            <label class="form-label small fw-bold">Tugas</label>
+                                                            <input type="number" name="nilai_tugas" class="form-control rounded-3" value="{{ $nilai->nilai_tugas }}" min="0" max="100" step="0.01" required>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="form-label small fw-bold">UTS</label>
+                                                            <input type="number" name="nilai_uts" class="form-control rounded-3" value="{{ $nilai->nilai_uts }}" min="0" max="100" step="0.01" required>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="form-label small fw-bold">UAS</label>
+                                                            <input type="number" name="nilai_uas" class="form-control rounded-3" value="{{ $nilai->nilai_uas }}" min="0" max="100" step="0.01" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-0 pt-0">
+                                                    <button type="button" class="btn btn-light rounded-3 px-4" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="submit" class="btn btn-primary rounded-3 px-4">Simpan Perubahan</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @empty

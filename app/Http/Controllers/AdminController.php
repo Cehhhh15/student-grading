@@ -621,4 +621,30 @@ class AdminController extends Controller
         // Return sebagai download PDF
         return $pdf->download('laporan-nilai-SIMPEL.pdf');
     }
+
+    /**
+     * Memperbarui nilai siswa oleh Admin.
+     * Menggunakan model binding untuk memanggil baris nilai.
+     *
+     * @param  Request $request
+     * @param  Nilai   $nilai
+     * @return RedirectResponse
+     */
+    public function updateNilai(Request $request, Nilai $nilai): RedirectResponse
+    {
+        $request->validate([
+            'nilai_tugas' => 'required|numeric|min:0|max:100',
+            'nilai_uts'   => 'required|numeric|min:0|max:100',
+            'nilai_uas'   => 'required|numeric|min:0|max:100',
+        ]);
+
+        // Update nilai mentah. Nilai akhir & status otomatis dihitung di method boot() Model Nilai
+        $nilai->update([
+            'nilai_tugas' => $request->nilai_tugas,
+            'nilai_uts'   => $request->nilai_uts,
+            'nilai_uas'   => $request->nilai_uas,
+        ]);
+
+        return back()->with('success', "Nilai siswa {$nilai->siswa->nama} pada mapel {$nilai->mataPelajaran->nama} berhasil diubah.");
+    }
 }

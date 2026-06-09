@@ -375,8 +375,8 @@
                 <div class="login-logo-sm">
                     <i class="bi bi-mortarboard-fill"></i>
                 </div>
-                <div class="login-title">Masuk ke SIMPEL SMA Grogu</div>
-                <div class="login-subtitle">Sistem Informasi Manajemen Pelajar</div>
+                <div class="login-title">SIMPEL SMA Grogu</div>
+                <div class="login-subtitle">Masuk ke Sistem Informasi Manajemen Pelajar</div>
             </div>
 
             {{-- Error --}}

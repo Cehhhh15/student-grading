@@ -101,6 +101,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     // ---- Laporan Nilai ----
     Route::get('/laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::get('/laporan/pdf', [AdminController::class, 'laporanPdf'])->name('laporan.pdf');
+    Route::put('/nilai/{nilai}', [AdminController::class, 'updateNilai'])->name('nilai.update');
 });
 
 // ============================================================
