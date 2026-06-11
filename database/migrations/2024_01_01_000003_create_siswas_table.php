@@ -3,6 +3,7 @@
 /**
  * Migration: Buat tabel siswas
  * Menyimpan profil lengkap siswa, terhubung ke tabel users.
+ * Kolom 'angkatan' sudah digabung langsung di sini (tidak perlu migration terpisah).
  */
 
 use Illuminate\Database\Migrations\Migration;
@@ -30,6 +31,7 @@ return new class extends Migration
             $table->string('nis', 20)->unique();  // Nomor Induk Siswa (wajib unik)
             $table->string('nama');               // Nama lengkap siswa
             $table->string('kelas', 20);          // Kelas siswa (contoh: X-A, XI-B)
+            $table->integer('angkatan')->nullable(); // Tahun angkatan (contoh: 2022, 2023, 2024)
             $table->timestamps();
         });
     }
